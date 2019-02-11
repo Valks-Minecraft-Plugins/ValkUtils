@@ -20,10 +20,70 @@ import com.vinkaitems.VinkaItems;
 
 public class ItemModule {
 	public static List<Inventory> translatedHandRecipes = new ArrayList<Inventory>();
+	public static List<Inventory> translatedCraftingRecipes = new ArrayList<Inventory>();
+	public static List<Inventory> translatedFurnaceRecipes = new ArrayList<Inventory>();
+	public static List<Inventory> translatedShapelessRecipes = new ArrayList<Inventory>();
+
 	public static List<ItemStack> handRecipeItems = new ArrayList<ItemStack>();
-	public List<Inventory> handNavigation = new ArrayList<Inventory>();
+	public static List<ItemStack> craftingRecipeItems = new ArrayList<ItemStack>();
+	public static List<ItemStack> furnaceRecipeItems = new ArrayList<ItemStack>();
+	public static List<ItemStack> shapelessRecipeItems = new ArrayList<ItemStack>();
+
+	public static List<Inventory> handNavigation = new ArrayList<Inventory>();
+	public static List<Inventory> craftingNavigation = new ArrayList<Inventory>();
+	public static List<Inventory> furnaceNavigation = new ArrayList<Inventory>();
+	public static List<Inventory> shapelessNavigation = new ArrayList<Inventory>();
 	
-	public void handRecipeHomeInv() {
+	public static void shapelessRecipeHomeInv() {
+		Inventory inv = null;
+		final int breakEach = 45;
+		for (int i = 0; i < shapelessRecipeItems.size(); i++) {
+			if (i % breakEach == 0) {
+				inv = Bukkit.createInventory(null, 9 * 6, "Shapeless Recipe Navigation");
+				inv.setItem(45, ItemModule.item("Previous", "Flip a page.", Material.BLACK_STAINED_GLASS_PANE));
+				inv.setItem(49, ItemModule.item("Back", "Go back a page.", Material.BLACK_STAINED_GLASS_PANE));
+				inv.setItem(53, ItemModule.item("Next", "Flip a page.", Material.BLACK_STAINED_GLASS_PANE));
+				shapelessNavigation.add(inv);
+			}
+			inv.setItem(i % breakEach, shapelessRecipeItems.get(i));
+		}
+	}
+	
+	public static void furnaceRecipeHomeInv() {
+		Inventory inv = null;
+		final int breakEach = 45;
+		for (int i = 0; i < furnaceRecipeItems.size(); i++) {
+			if (i % breakEach == 0) {
+				inv = Bukkit.createInventory(null, 9 * 6, "Furnace Recipe Navigation");
+				inv.setItem(45, ItemModule.item("Previous", "Flip a page.", Material.BLACK_STAINED_GLASS_PANE));
+				inv.setItem(49, ItemModule.item("Back", "Go back a page.", Material.BLACK_STAINED_GLASS_PANE));
+				inv.setItem(53, ItemModule.item("Next", "Flip a page.", Material.BLACK_STAINED_GLASS_PANE));
+				furnaceNavigation.add(inv);
+			}
+			inv.setItem(i % breakEach, furnaceRecipeItems.get(i));
+		}
+	}
+	
+	public static void craftingRecipeHomeInv() {
+		Inventory inv = null;
+		final int breakEach = 45;
+		for (int i = 0; i < craftingRecipeItems.size(); i++) {
+			if (i % breakEach == 0) {
+				inv = Bukkit.createInventory(null, 9 * 6, "Crafting Recipe Navigation");
+				inv.setItem(45, ItemModule.item("Previous", "Flip a page.", Material.BLACK_STAINED_GLASS_PANE));
+				inv.setItem(49, ItemModule.item("Back", "Go back a page.", Material.BLACK_STAINED_GLASS_PANE));
+				inv.setItem(53, ItemModule.item("Next", "Flip a page.", Material.BLACK_STAINED_GLASS_PANE));
+				craftingNavigation.add(inv);
+			}
+			inv.setItem(i % breakEach, craftingRecipeItems.get(i));
+		}
+	}
+	
+	/*
+	 * Needs to be executed at the startup of a plugin.
+	 * Prepares the hand navigation inventories.
+	 */
+	public static void handRecipeHomeInv() {
 		Inventory inv = null;
 		final int breakEach = 45;
 		for (int i = 0; i < handRecipeItems.size(); i++) {
@@ -36,6 +96,42 @@ public class ItemModule {
 			}
 			inv.setItem(i % breakEach, handRecipeItems.get(i));
 		}
+	}
+	
+	public static void translateFurnaceRecipe(ItemStack result, Material required) {
+		Inventory recipe = Bukkit.createInventory(null, 36, "Furnace Recipe Guide");
+		recipe.setItem(0, new ItemStack(required));
+		recipe.setItem(1, ItemModule.item("--->", "--->", Material.BLACK_STAINED_GLASS_PANE));
+		recipe.setItem(2, result);
+		recipe.setItem(18 + 9, ItemModule.item("Previous", "Flip a page.", Material.BLACK_STAINED_GLASS_PANE));
+		recipe.setItem(18 + 9 + 4, ItemModule.item("Back", "Go back a page.", Material.BLACK_STAINED_GLASS_PANE));
+		recipe.setItem(26 + 9, ItemModule.item("Next", "Flip a page.", Material.BLACK_STAINED_GLASS_PANE));
+		translatedFurnaceRecipes.add(recipe);
+	}
+	
+	public static void translateCraftingRecipe(ItemStack result, ItemStack[] required, String shape, String ids) {
+		Inventory recipe = Bukkit.createInventory(null, 36, "Crafting Recipe Guide");
+		String[] the_ids = ids.split(",");
+		for (int i = 0; i < the_ids.length; i++) {
+			for (int n = 0; n < shape.length(); n++) {
+				char c = shape.charAt(n);
+				if (c == the_ids[i].charAt(0)) {
+					if (n > 5) {
+						recipe.setItem(n + 12, required[i]);
+					} else if (n > 2) {
+						recipe.setItem(n + 6, required[i]);
+					} else {
+						recipe.setItem(n, required[i]);
+					}
+				}
+			}
+		}
+		recipe.setItem(12, ItemModule.item("--->", "--->", Material.BLACK_STAINED_GLASS_PANE));
+		recipe.setItem(13, result);
+		recipe.setItem(18 + 9, ItemModule.item("Previous", "Flip a page.", Material.BLACK_STAINED_GLASS_PANE));
+		recipe.setItem(18 + 9 + 4, ItemModule.item("Back", "Go back a page.", Material.BLACK_STAINED_GLASS_PANE));
+		recipe.setItem(26 + 9, ItemModule.item("Next", "Flip a page.", Material.BLACK_STAINED_GLASS_PANE));
+		translatedCraftingRecipes.add(recipe);
 	}
 	
 	public static void translateHandRecipe(ItemStack result, ItemStack[] required, String shape, String ids) {
@@ -61,6 +157,27 @@ public class ItemModule {
 		translatedHandRecipes.add(recipe);
 	}
 	
+	public static void translateShapelessRecipe(ItemStack result, ItemStack[] ingredients) {
+		Inventory recipe = Bukkit.createInventory(null, 36, "Shapeless Recipe Guide");
+		
+		for (int i = 0; i < ingredients.length; i++) {
+			if (i > 5) {
+				recipe.setItem(i + 12, ingredients[i]);
+			} else if (i > 2) {
+				recipe.setItem(i + 6, ingredients[i]);
+			} else {
+				recipe.setItem(i, ingredients[i]);
+			}
+		}
+		recipe.setItem(12, ItemModule.item("--->", "--->", Material.BLACK_STAINED_GLASS_PANE));
+		recipe.setItem(13, result);
+		
+		recipe.setItem(18 + 9, ItemModule.item("Previous", "Flip a page.", Material.BLACK_STAINED_GLASS_PANE));
+		recipe.setItem(18 + 9 + 4, ItemModule.item("Back", "Go back a page.", Material.BLACK_STAINED_GLASS_PANE));
+		recipe.setItem(26 + 9, ItemModule.item("Next", "Flip a page.", Material.BLACK_STAINED_GLASS_PANE));
+		translatedShapelessRecipes.add(recipe);
+	}
+	
 	public static void craftedRecipe(String key, ItemStack item, String rows, ItemStack[] ingredients, String ids) {
 		NamespacedKey namespacedKey = new NamespacedKey(ValkUtils.plugin, key);
 		ShapedRecipe recipe = new ShapedRecipe(namespacedKey, item);
@@ -76,6 +193,8 @@ public class ItemModule {
 		}
 		ValkUtils.plugin.getServer().addRecipe(recipe);
 		ValkUtils.plugin.recipes.add(new NamespacedKey(ValkUtils.plugin, key));
+		translateCraftingRecipe(item, ingredients, rows, ids);
+		craftingRecipeItems.add(item);
 	}
 	
 	public static void handRecipe(String key, ItemStack item, String rows, ItemStack[] ingredients, String ids) {
@@ -104,6 +223,8 @@ public class ItemModule {
 		FurnaceRecipe recipe = new FurnaceRecipe(nameSpacedKey, result, required, 0f, time * 20);
 		ValkUtils.plugin.getServer().addRecipe(recipe);
 		ValkUtils.plugin.recipes.add(new NamespacedKey(ValkUtils.plugin, key));
+		translateFurnaceRecipe(result, required);
+		furnaceRecipeItems.add(result);
 	}
 	
 	public static void shapelessRecipe(String key, ItemStack item, ItemStack[] ingredients) {
@@ -113,6 +234,8 @@ public class ItemModule {
 			recipe.addIngredient(ingredient.getType());
 		}
 		ValkUtils.plugin.getServer().addRecipe(recipe);
+		translateShapelessRecipe(item, ingredients);
+		shapelessRecipeItems.add(item);
 	}
 	
 	public static ItemStack item(String name, String lore, Material material) {
