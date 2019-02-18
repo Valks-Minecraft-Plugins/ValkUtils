@@ -195,6 +195,7 @@ public class ItemModule {
 		ValkUtils.plugin.recipes.add(new NamespacedKey(ValkUtils.plugin, key));
 		translateCraftingRecipe(item, ingredients, rows, ids);
 		craftingRecipeItems.add(item);
+		VinkaItems.items.add(item);
 	}
 	
 	public static void handRecipe(String key, ItemStack item, String rows, ItemStack[] ingredients, String ids) {
@@ -213,6 +214,7 @@ public class ItemModule {
 		ValkUtils.plugin.recipes.add(new NamespacedKey(ValkUtils.plugin, key));
 		translateHandRecipe(item, ingredients, rows, ids);
 		handRecipeItems.add(item);
+		VinkaItems.items.add(item);
 	}
 	
 	/*
@@ -225,6 +227,7 @@ public class ItemModule {
 		ValkUtils.plugin.recipes.add(new NamespacedKey(ValkUtils.plugin, key));
 		translateFurnaceRecipe(result, required);
 		furnaceRecipeItems.add(result);
+		VinkaItems.items.add(result);
 	}
 	
 	public static void shapelessRecipe(String key, ItemStack item, ItemStack[] ingredients) {
@@ -249,7 +252,6 @@ public class ItemModule {
 		}
 		im.setLore(list);
 		item.setItemMeta(im);
-		VinkaItems.items.add(item);
 		return item;
 	}
 	
@@ -264,7 +266,6 @@ public class ItemModule {
 		}
 		im.setLore(list);
 		item.setItemMeta(im);
-		VinkaItems.items.add(item);
 		return item;
 	}
 }
