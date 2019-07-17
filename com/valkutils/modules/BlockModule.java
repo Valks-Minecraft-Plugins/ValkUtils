@@ -126,7 +126,6 @@ public class BlockModule {
 		case LARGE_FERN:
 		case SEAGRASS:
 		case DANDELION:
-		case DANDELION_YELLOW:
 		case POPPY:
 		case BLUE_ORCHID:
 		case ALLIUM:

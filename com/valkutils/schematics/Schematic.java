@@ -44,7 +44,7 @@ public class Schematic {
 	}
 	
 	public void pasteSchematicV2(Location loc) {
-		List<SchemBlock> blocks = getSchematicData(loc);
+		final List<SchemBlock> blocks = getSchematicData(loc);
 		
 		new BukkitRunnable() {
 			int counter = 0;

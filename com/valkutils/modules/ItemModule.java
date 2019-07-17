@@ -16,6 +16,7 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.valkutils.ValkUtils;
+import com.vinkaitems.VinkaItem;
 import com.vinkaitems.VinkaItems;
 
 public class ItemModule {
@@ -195,7 +196,6 @@ public class ItemModule {
 		ValkUtils.plugin.recipes.add(new NamespacedKey(ValkUtils.plugin, key));
 		translateCraftingRecipe(item, ingredients, rows, ids);
 		craftingRecipeItems.add(item);
-		VinkaItems.items.add(item);
 	}
 	
 	public static void handRecipe(String key, ItemStack item, String rows, ItemStack[] ingredients, String ids) {
@@ -214,7 +214,6 @@ public class ItemModule {
 		ValkUtils.plugin.recipes.add(new NamespacedKey(ValkUtils.plugin, key));
 		translateHandRecipe(item, ingredients, rows, ids);
 		handRecipeItems.add(item);
-		VinkaItems.items.add(item);
 	}
 	
 	/*
@@ -227,7 +226,6 @@ public class ItemModule {
 		ValkUtils.plugin.recipes.add(new NamespacedKey(ValkUtils.plugin, key));
 		translateFurnaceRecipe(result, required);
 		furnaceRecipeItems.add(result);
-		VinkaItems.items.add(result);
 	}
 	
 	public static void shapelessRecipe(String key, ItemStack item, ItemStack[] ingredients) {
@@ -242,9 +240,10 @@ public class ItemModule {
 	}
 	
 	public static ItemStack item(String name, String lore, Material material) {
-		ItemStack item = new ItemStack(material);
+		VinkaItem vinkaItem = new VinkaItem(material);
+		vinkaItem.setName(ChatColor.WHITE + TextModule.color(name));
+		ItemStack item = vinkaItem.getItem();
 		ItemMeta im = item.getItemMeta();
-		im.setDisplayName(ChatColor.WHITE + TextModule.color(name));
 		im.addItemFlags(ItemFlag.values());
 		List<String> list = new ArrayList<String>();
 		for (String element : lore.split("\n")) {
@@ -252,11 +251,13 @@ public class ItemModule {
 		}
 		im.setLore(list);
 		item.setItemMeta(im);
+		VinkaItems.items.add(vinkaItem);
 		return item;
 	}
 	
 	public static ItemStack tool(String name, String lore, Material material) {
-		ItemStack item = new ItemStack(material, 1);
+		VinkaItem vinkaItem = new VinkaItem(material);
+		ItemStack item = vinkaItem.getItem();
 		ItemMeta im = item.getItemMeta();
 		im.setDisplayName(ChatColor.WHITE + TextModule.color(name));
 		im.addItemFlags(ItemFlag.values());
@@ -266,6 +267,7 @@ public class ItemModule {
 		}
 		im.setLore(list);
 		item.setItemMeta(im);
+		VinkaItems.items.add(vinkaItem);
 		return item;
 	}
 }

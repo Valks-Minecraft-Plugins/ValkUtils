@@ -31,7 +31,6 @@ public class Hologram {
 		final Vector to = new Vector(0, 1, 0).multiply(0.01);
 		
 		new BukkitRunnable() {
-			@Override
 			public void run() {
 				as.setVelocity(to);
 			}
